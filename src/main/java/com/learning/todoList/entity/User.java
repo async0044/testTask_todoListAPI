@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 
 @Entity
-@Table(name="todoUser")
+@Table(name="todouser")
 public class User {
 
     @Id
@@ -13,14 +13,16 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private String role;
     private String status;
 
     public User() {}
 
-    public User(String username, String password, String email, String status) {
+    public User(String username, String password, String email, String role, String status) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.role = role;
         this.status = status;
     }
 
@@ -58,5 +60,13 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
