@@ -6,6 +6,8 @@ import com.learning.todoList.entity.User;
 import com.learning.todoList.exception.AddUserException;
 import com.learning.todoList.mapper.UserMapper;
 import com.learning.todoList.repository.UserRepository;
+import com.learning.todoList.util.Role;
+import com.learning.todoList.util.Status;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,7 +25,6 @@ public class UserService {
 
     public UserResponseDto addUser(UserRequestDto userRequestDto) {
         if (userRepository.existsByUsername(userRequestDto.username())) throw new AddUserException("Username already exists");
-
         if (userRepository.existsByEmail(userRequestDto.email())) throw new AddUserException("Email already exists");     //todo переделать на что-то типа CustomServiceException
 /*
         User user = new User();
@@ -60,15 +61,17 @@ public class UserService {
         user.setUsername(userRequestDto.username());
         user.setEmail(userRequestDto.email());
         user.setPassword(new BCryptPasswordEncoder(12).encode(userRequestDto.password()));  //todo переделать под UserMapper
-        user.setRole("ROLE_USER");
-        user.setStatus("ACTIVE");
         return UserMapper.userToDto(userRepository.save(user));
     }
 
     public UserResponseDto deleteUserById(Long id) {
-        //return UserMapper.userToDto(userRepository.deleteByIdAndReturn(id).orElseThrow(() -> new ServiceException("User with this ID not found")));
         return userRepository.deleteByIdAndReturn(id).map(UserMapper::userToDto).orElseThrow(() -> new ServiceException("User with this ID not found"));
     }
-//
+
+    public UserResponseDto changeStatusById(Long id, Status status) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ServiceException("User with this ID not found"));
+        user.setStatus(status);
+        return UserMapper.userToDto(userRepository.save(user));
+    }
 
 }

@@ -4,6 +4,7 @@ package com.learning.todoList.controller;
 import com.learning.todoList.dto.UserRequestDto;
 import com.learning.todoList.dto.UserResponseDto;
 import com.learning.todoList.service.UserService;
+import com.learning.todoList.util.Status;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -54,9 +55,17 @@ public class UserController {
         return ResponseEntity.ok().body(userService.updateUserById(id, userRequestDto));
     }
 
+    //TODO переделать updateUser:
+    //  GetMapping отсылает ДТО юзера, юзер переписывает там и возвращает исправленный ДТО, и сервис меняет исправленные поля в БД, как-то так
+
     @DeleteMapping("/deleteUserById")
     public ResponseEntity<UserResponseDto> deleteUserById (@RequestParam @NotNull(message = "ID cannot be null") @Positive(message = "ID must be a positive number") Long id) {
         return ResponseEntity.ok().body(userService.deleteUserById(id));
+    }
+
+    @PatchMapping("/changeStatusById")
+    public ResponseEntity<UserResponseDto> changeStatusById(@RequestParam @NotNull(message = "ID cannot be null") @Positive(message = "ID must be a positive number") Long id, @RequestParam Status status) {
+        return ResponseEntity.ok().body(userService.changeStatusById(id, status));
     }
 
     /*
@@ -69,4 +78,6 @@ public class UserController {
     deleteUser
     stopUserActually
      */
+
+    //TODO авторизация пользователя
 }

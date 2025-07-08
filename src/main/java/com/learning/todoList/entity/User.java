@@ -1,7 +1,8 @@
 package com.learning.todoList.entity;
 
+import com.learning.todoList.util.Role;
+import com.learning.todoList.util.Status;
 import jakarta.persistence.*;
-import org.springframework.stereotype.Repository;
 
 @Entity
 @Table(name="todouser")
@@ -13,12 +14,12 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private String role;
-    private String status;
+    private Role role;
+    private Status status;
 
     public User() {}
 
-    public User(String username, String password, String email, String role, String status) {
+    public User(String username, String password, String email, Role role, Status status) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -54,19 +55,19 @@ public class User {
         this.email = email;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }
